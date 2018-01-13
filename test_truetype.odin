@@ -48,15 +48,17 @@ save_bitmap_to_file :: proc(ttf_filename, output_filename: string, width, height
     defer free(color_image);
 
     // color each size differently:
+    max_height := 0;
     for i in 0..16 {
         R := 0.5 + 0.5*math.cos(2.0*f64(i));
         G := 0.5 + 0.5*math.cos(3.0*f64(i));
         B := 0.5 + 0.5*math.cos(5.0*f64(i));
         for j in 0..95 {
             m := glyph_metrics[i][j];
+            max_height = max(max_height, int(m.y1));
             for y in m.y0...m.y1 {
                 for x in m.x0...m.x1 {
-                    id := int(y)*height + int(x);
+                    id := int(y)*width + int(x);
 
                     p := bitmap[id];
                     color_image[3*id+0] = u8(R*f64(p));
@@ -67,7 +69,7 @@ save_bitmap_to_file :: proc(ttf_filename, output_filename: string, width, height
         }
     }
 
-    write_png(output_filename, width, height, 3, color_image, 0);
+    write_png(output_filename, width, max_height+1, 3, color_image, 0);
 }
 
 main :: proc() {
