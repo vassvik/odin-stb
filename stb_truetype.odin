@@ -380,6 +380,6 @@ save_bitmap_to_file :: proc(ttf_filename, output_filename: string, width, height
     write_png(output_filename, width, height, 1, bitmap, 0);
 }
 
-test :: proc() {
-    save_bitmap_to_file("consola.ttf", 1024, 1024, 1, 1);
+test_truetype :: proc() {
+    save_bitmap_to_file("consola.ttf", "test.png", 1024, 1024, 1, 1);
 }

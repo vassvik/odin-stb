@@ -12,7 +12,7 @@ write_png :: proc(filename: string, w, h, comp: int, data: []u8, stride_in_bytes
 	return cast(int)stbi_write_png(&filename[0], i32(w), i32(h), i32(comp), &data[0], i32(stride_in_bytes));
 }
 
-test :: proc() {
+test_image_write :: proc() {
 	w, h, c := 512, 512, 3;
 	
 	data := make([]u8, c*w*h);
