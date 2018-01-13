@@ -7,7 +7,7 @@ when ODIN_OS == "linux" do foreign import stbi "lib/stb_image.a"
 //
 // load image by filename, open file, or memory buffer
 //
-Io_Callbacks :: struct #ordered {
+Io_Callbacks :: struct {
 	read: proc "c" (user: rawptr, data: ^u8, size: i32) -> i32, // fill 'data' with 'size' u8s.  return number of u8s actually read
 	skip: proc "c" (user: rawptr, n: i32),                        // skip the next 'n' u8s, or 'unget' the last -n u8s if negative
 	eof:  proc "c" (user: rawptr) -> i32,                         // returns nonzero if we are at end of file/data
