@@ -1,23 +1,15 @@
 # odin-stb
 
 
-WORK IN PROGRESS bindings to the stb single header libraries
+cl -nologo -MT -TC -c stb_image.c
+lib -nologo stb_image.obj -out:stb_image.lib
+lib -nologo stb_image_write.obj -out:stb_image_write.lib
+lib -nologo stb_truetype.obj -out:stb_truetype.lib
 
-We need to compile the headers as a library to bind to them in Odin. Note that we prefer static libs. 
-
-Use the supplied Makefil or build.bat in src to build. 
-
-Note: stb_image is done, while the rest are incomplete and does not work.
-
-
-## Example stb_image:
-
-```
-import stbi "shared:odin-stb/stb_image.odin"
-
-main :: proc() {
-	x, y, c: i32;
-	data := stbi.load("test.png", &x, &y, &c, 3);
-	fmt.println(data, x, y, c);
-}
-```
+gcc -c -O2 -fPIC stb_image.c stb_image_write.c stb_truetype.c
+ar rcs ../lib/stb_image.a stb_image.o
+ar rcs ../lib/stb_image_write.a stb_image_write.o
+ar rcs ../lib/stb_truetype.a stb_truetype.o
+gcc -fPIC -shared -Wl,-soname=stb_image.so  -o ../lib/stb_image.so stb_image.o
+gcc -fPIC -shared -Wl,-soname=stb_image_write.so  -o ../lib/stb_image_write.so stb_image_write.o
+gcc -fPIC -shared -Wl,-soname=stb_truetype.so  -o ../lib/stb_truetype.so stb_image_truetype.o

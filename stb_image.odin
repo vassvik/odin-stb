@@ -80,3 +80,8 @@ foreign stbi {
 	zlib_decode_noheader_malloc :: proc(buffer:     ^u8, len:  i32, outlen: ^i32) -> ^u8 ---;
 	zlib_decode_noheader_buffer :: proc(obuffer:    ^u8, olen: i32, ibuffer: ^u8, ilen: i32) -> i32 ---;
 }
+
+
+main :: proc() {
+	
+}

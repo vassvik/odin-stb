@@ -1,3 +1,4 @@
+if not exist "..\lib" mkdir ..\lib
 
 cl -nologo -MT -TC -O2 -c stb_image.c stb_image_write.c stb_truetype.c
 lib -nologo stb_image.obj -out:..\lib\stb_image.lib
