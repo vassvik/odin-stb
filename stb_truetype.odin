@@ -79,7 +79,7 @@ stbtt_pack_range :: struct {
    array_of_unicode_codepoints: ^i32,
    num_chars: i32,
    chardata_for_range: ^stbtt_packedchar,
-   h_oversample, v_oversample: u8, 
+   _, _: u8, // used internally to store oversample info
 } 
 
 stbtt_pack_context :: struct {
@@ -316,7 +316,7 @@ get_glyph_SDF :: proc(info: ^stbtt_fontinfo, scale: f32, glyph, padding: int, on
 
 }
 
-GetCodepointSDF :: proc(info: ^stbtt_fontinfo, scale: f32, codepoint, padding: int, onedge_value: u8, pixel_dist_scale: f32) -> ([]u8, int, int, int, int) {
+get_codepoint_SDF :: proc(info: ^stbtt_fontinfo, scale: f32, codepoint: rune, padding: int, onedge_value: u8, pixel_dist_scale: f32) -> ([]u8, int, int, int, int) {
     width, height, xoff, yoff: i32;
     data := stbtt_GetCodepointSDF(info, scale, i32(codepoint), i32(padding), onedge_value, pixel_dist_scale, &width, &height, &xoff, &yoff);
     return mem.slice_ptr(data, (int(width)+2*padding)*(int(height)+2*padding)), int(width), int(height), int(xoff), int(yoff);
