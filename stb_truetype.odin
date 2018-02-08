@@ -34,8 +34,8 @@ stbtt_aligned_quad :: struct {
     x1, y1, s1, t1: f32, // bottom-right
 }
 
-Baked_Char :: #type_alias stbtt_bakedchar;
-Aligned_Quad :: #type_alias stbtt_aligned_quad;
+Baked_Char :: stbtt_bakedchar;
+Aligned_Quad :: stbtt_aligned_quad;
 
 
 // bindings
@@ -88,9 +88,9 @@ stbtt_pack_context :: struct {
    nodes: rawptr,
 };
 
-Packed_Char :: #type_alias stbtt_packedchar;
-Pack_Range :: #type_alias stbtt_pack_range;
-Pack_Context :: #type_alias stbtt_pack_context;
+Packed_Char :: stbtt_packedchar;
+Pack_Range :: stbtt_pack_range;
+Pack_Context :: stbtt_pack_context;
 
 STBTT_POINT_SIZE :: inline proc(x: $T) -> T { return -x; } // @NOTE: this was a macro
 
@@ -167,7 +167,7 @@ stbtt_fontinfo :: struct {
     fdselect: stbtt__buf,
 }
 
-Font_Info :: #type_alias stbtt_fontinfo;
+Font_Info :: stbtt_fontinfo;
 
 @(default_calling_convention="c")
 foreign stbtt {
