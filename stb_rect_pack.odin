@@ -24,22 +24,26 @@ stbrp_node :: struct {
 };
 
 stbrp_context :: struct {
-   width       : i32;
-   height      : i32;
-   align       : i32;
-   init_mode   : i32;
-   heuristic   : i32;
-   num_nodes   : i32;
-   active_head : ^stbrp_node;
-   free_head   : ^stbrp_node;
-   extra       : [2]stbrp_node;
+   width       : i32,
+   height      : i32,
+   align       : i32,
+   init_mode   : i32,
+   heuristic   : i32,
+   num_nodes   : i32,
+   active_head : ^stbrp_node,
+   free_head   : ^stbrp_node,
+   extra       : [2]stbrp_node,
 };
 
 
-@(default_calling_convetion="c")
+@(default_calling_convention="c")
 foreign stb_rect_pack {
 	stbrp_init_target            :: proc(contex: ^stbrp_context, width: i32, height: i32, nodes: stbrp_node, num_nodes: i32) ---;
 	stbrp_pack_rects             :: proc(contex: ^stbrp_context, rects: ^stbrp_rect, num_rects: i32) -> i32 ---;
 	stbrp_setup_allow_out_of_mem :: proc(contex: ^stbrp_context, allow_out_of_mem: i32) ---;
 	stbrp_setup_heuristic        :: proc(contex: ^stbrp_context, heuristic: i32) ---;
+}
+
+main :: proc() {
+
 }
