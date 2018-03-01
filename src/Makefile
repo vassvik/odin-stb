@@ -1,4 +1,5 @@
 all:
+	mkdir -p ../lib
 	gcc -c -O2 -march=native -Os -fPIC stb_image.c stb_image_write.c stb_truetype.c stb_rect_pack.c
 	ar rcs ../lib/stb_image.a stb_image.o
 	ar rcs ../lib/stb_image_write.a stb_image_write.o
