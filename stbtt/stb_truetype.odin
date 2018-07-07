@@ -1,7 +1,11 @@
-when ODIN_OS == "windows" do foreign import stbtt "lib/stb_truetype.lib"
-when ODIN_OS == "linux" do foreign import stbtt "lib/stb_truetype.a"
+package stbtt
 
-import "core:mem.odin";
+import "core:os"
+
+when os.OS == "windows" do foreign import stbtt "../lib/stb_truetype.lib"
+when os.OS == "linux" do foreign import stbtt "../lib/stb_truetype.a"
+
+import "core:mem";
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,9 +1,13 @@
-when ODIN_OS == "windows" do foreign import stbi "lib/stb_image_write.lib"
-when ODIN_OS == "linux" do foreign import stbi "lib/stb_image_write.a"
+package stbi
+
+import "core:os"
+
+when os.OS == "windows" do foreign import stbiw "../lib/stb_image_write.lib"
+when os.OS == "linux" do foreign import stbiw "../lib/stb_image_write.a"
 
 // bind
 @(default_calling_convention="c")
-foreign stbi {
+foreign stbiw {
 	stbi_write_png :: proc(filename: ^u8, w, h, comp: i32, data: rawptr, stride_in_bytes: i32) -> i32 ---;
 }
 
