@@ -36,16 +36,32 @@ write_jpg :: inline proc(filename: string, w, h, comp: int, data: []u8, quality:
 	return cast(int)stbi_write_jpg(&filename[0], i32(w), i32(h), i32(comp), &data[0], i32(quality));
 }
 
-write_png_flip :: inline proc(filename: string, w, h, comp: int, data: []u8, stride_in_bytes: int) -> int {
+write_png_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u8, stride_in_bytes: int) -> int {
+	#assert(comp >= 0 && comp <= 4);
 	for j in 0..h/2-1 {
 		for i in 0..w-1 {
-			k1 := 4*(j*w + i);
-			k2 := 4*((h - 1 - j)*w + i);
+			k1 := comp*(j*w + i);
+			k2 := comp*((h - 1 - j)*w + i);
 			data[k1 + 0], data[k2 + 0] = data[k2 + 0], data[k1 + 0];
-			data[k1 + 1], data[k2 + 1] = data[k2 + 1], data[k1 + 1];
-			data[k1 + 2], data[k2 + 2] = data[k2 + 2], data[k1 + 2];
-			data[k1 + 3], data[k2 + 3] = data[k2 + 3], data[k1 + 3];
+			when comp > 1 do data[k1 + 1], data[k2 + 1] = data[k2 + 1], data[k1 + 1];
+			when comp > 2 do data[k1 + 2], data[k2 + 2] = data[k2 + 2], data[k1 + 2];
+			when comp > 3 do data[k1 + 3], data[k2 + 3] = data[k2 + 3], data[k1 + 3];
 		}
 	}
 	return cast(int)stbi_write_png(&filename[0], i32(w), i32(h), i32(comp), &data[0], i32(stride_in_bytes));
+}
+
+write_tga_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u8) -> int {
+	#assert(comp >= 0 && comp <= 4);
+	for j in 0..h/2-1 {
+		for i in 0..w-1 {
+			k1 := comp*(j*w + i);
+			k2 := comp*((h - 1 - j)*w + i);
+			data[k1 + 0], data[k2 + 0] = data[k2 + 0], data[k1 + 0];
+			when comp > 1 do data[k1 + 1], data[k2 + 1] = data[k2 + 1], data[k1 + 1];
+			when comp > 2 do data[k1 + 2], data[k2 + 2] = data[k2 + 2], data[k1 + 2];
+			when comp > 3 do data[k1 + 3], data[k2 + 3] = data[k2 + 3], data[k1 + 3];
+		}
+	}
+	return cast(int)stbi_write_tga(&filename[0], i32(w), i32(h), i32(comp), &data[0]);
 }
