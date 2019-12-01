@@ -24,7 +24,7 @@ foreign stbi {
 	//
 	// 8-bits-per-channel interface
 	//
-	load                :: proc(filename: ^u8,                     x, y, channels_in_file: ^i32, desired_channels: i32) -> ^u8 ---;
+	load                :: proc(filename: cstring,                     x, y, channels_in_file: ^i32, desired_channels: i32) -> ^u8 ---;
 	load_from_memory    :: proc(buffer: ^u8, len: i32,             x, y, channels_in_file: ^i32, desired_channels: i32) -> ^u8 ---;
 	load_from_callbacks :: proc(clbk: ^Io_Callbacks, user: rawptr, x, y, channels_in_file: ^i32, desired_channels: i32) -> ^u8 ---;
 
@@ -38,7 +38,7 @@ foreign stbi {
 	//
 	// float-per-channel interface
 	//
-	loadf                 :: proc(filename: ^u8,                     x, y, channels_in_file: ^i32, desired_channels: i32) -> ^f32 ---;
+	loadf                 :: proc(filename: cstring,                     x, y, channels_in_file: ^i32, desired_channels: i32) -> ^f32 ---;
 	loadf_from_memory     :: proc(buffer: ^u8, len: i32,             x, y, channels_in_file: ^i32, desired_channels: i32) -> ^f32 ---;
 	loadf_from_callbacks  :: proc(clbk: ^Io_Callbacks, user: rawptr, x, y, channels_in_file: ^i32, desired_channels: i32) -> ^f32 ---;
 
@@ -49,7 +49,7 @@ foreign stbi {
 	is_hdr_from_callbacks :: proc(clbk: ^Io_Callbacks, user: rawptr) -> i32 ---;
 	is_hdr_from_memory    :: proc(buffer: ^u8, len: i32) -> i32 ---;
 
-	is_hdr :: proc(filename: ^u8) -> i32 ---;
+	is_hdr :: proc(filename: cstring) -> i32 ---;
 
 	// get a VERY brief reason for failure
 	// NOT THREADSAFE
@@ -59,7 +59,7 @@ foreign stbi {
 	image_free :: proc(retval_from_load: rawptr) ---;
 
 	// get image dimensions & components without fully decoding
-	info                :: proc(filename: ^u8,                     x, y, comp: ^i32) -> i32 ---;
+	info                :: proc(filename: cstring,                     x, y, comp: ^i32) -> i32 ---;
 	info_from_memory    :: proc(buffer: ^u8, len: i32,             x, y, comp: ^i32) -> i32 ---;
 	info_from_callbacks :: proc(clbk: ^Io_Callbacks, user: rawptr, x, y, comp: ^i32) -> i32 ---;
 
