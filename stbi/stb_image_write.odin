@@ -49,7 +49,7 @@ write_png_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u
 			when comp > 3 do data[k1 + 3], data[k2 + 3] = data[k2 + 3], data[k1 + 3];
 		}
 	}
-	return cast(int)stbi_write_png(&filename[0], i32(w), i32(h), i32(comp), &data[0], i32(stride_in_bytes));
+	return cast(int)stbi_write_png(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0], i32(stride_in_bytes));
 }
 
 write_tga_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u8) -> int {
@@ -64,5 +64,5 @@ write_tga_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u
 			when comp > 3 do data[k1 + 3], data[k2 + 3] = data[k2 + 3], data[k1 + 3];
 		}
 	}
-	return cast(int)stbi_write_tga(&filename[0], i32(w), i32(h), i32(comp), &data[0]);
+	return cast(int)stbi_write_tga(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0]);
 }
