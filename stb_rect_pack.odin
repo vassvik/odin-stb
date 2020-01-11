@@ -8,38 +8,42 @@ STBRP_HEURISTIC :: enum i32 #export
    STBRP_HEURISTIC_Skyline_BF_sortHeight
 };
 
-stbrp_coord :: u16;
+coord :: u16;
 
-stbrp_rect :: struct {
+rect :: struct {
    // reserved for your use:
    id         : i32,
-   w, h       : stbrp_coord,
-   x, y       : stbrp_coord,
+   w, h       : coord,
+   x, y       : coord,
    was_packed : i32,
 }
 
-stbrp_node :: struct {
-   x,y  : stbrp_coord,
-   next : ^stbrp_node,
+node :: struct {
+   x,y  : coord,
+   next : ^node,
 };
 
-stbrp_context :: struct {
+ctx :: struct {
    width       : i32,
    height      : i32,
    align       : i32,
    init_mode   : i32,
    heuristic   : i32,
    num_nodes   : i32,
-   active_head : ^stbrp_node,
-   free_head   : ^stbrp_node,
-   extra       : [2]stbrp_node,
+   active_head : ^node,
+   free_head   : ^node,
+   extra       : [2]node,
 };
 
 
-@(default_calling_convention="c")
+@(default_calling_convention="c", link_prefix="stbrp_")
 foreign stb_rect_pack {
-	stbrp_init_target            :: proc(contex: ^stbrp_context, width: i32, height: i32, nodes: ^stbrp_node, num_nodes: i32) ---;
-	stbrp_pack_rects             :: proc(contex: ^stbrp_context, rects: ^stbrp_rect, num_rects: i32) -> i32 ---;
-	stbrp_setup_allow_out_of_mem :: proc(contex: ^stbrp_context, allow_out_of_mem: i32) ---;
-	stbrp_setup_heuristic        :: proc(contex: ^stbrp_context, heuristic: i32) ---;
+	init_target            :: proc(contex: ^ctx, width: i32, height: i32, nodes: ^node, num_nodes: i32) ---;
+	pack_rects             :: proc(contex: ^ctx, rects: ^rect, num_rects: i32) -> i32 ---;
+	setup_allow_out_of_mem :: proc(contex: ^ctx, allow_out_of_mem: i32) ---;
+	setup_heuristic        :: proc(contex: ^ctx, heuristic: i32) ---;
+}
+
+main :: proc() {
+
 }
