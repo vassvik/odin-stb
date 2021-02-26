@@ -17,27 +17,27 @@ foreign stbiw {
 }
 
 // wrap
-write_png :: inline proc(filename: string, w, h, comp: int, data: []u8, stride_in_bytes: int) -> int {
+write_png :: #force_inline proc(filename: string, w, h, comp: int, data: []u8, stride_in_bytes: int) -> int {
 	return cast(int)stbi_write_png(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0], i32(stride_in_bytes));
 }
 
-write_bmp :: inline proc(filename: string, w, h, comp: int, data: []u8) -> int {
+write_bmp :: #force_inline proc(filename: string, w, h, comp: int, data: []u8) -> int {
 	return cast(int)stbi_write_bmp(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0]);
 }
 
-write_tga :: inline proc(filename: string, w, h, comp: int, data: []u8) -> int {
+write_tga :: #force_inline proc(filename: string, w, h, comp: int, data: []u8) -> int {
 	return cast(int)stbi_write_tga(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0]);
 }
 
-write_hdr :: inline proc(filename: string, w, h, comp: int, data: []f32) -> int {
+write_hdr :: #force_inline proc(filename: string, w, h, comp: int, data: []f32) -> int {
 	return cast(int)stbi_write_hdr(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0]);
 }
 
-write_jpg :: inline proc(filename: string, w, h, comp: int, data: []u8, quality: int) -> int {
+write_jpg :: #force_inline proc(filename: string, w, h, comp: int, data: []u8, quality: int) -> int {
 	return cast(int)stbi_write_jpg(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0], i32(quality));
 }
 
-write_png_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u8, stride_in_bytes: int) -> int {
+write_png_flip :: proc(filename: string, w, h: int, $comp: int, data: []u8, stride_in_bytes: int) -> int {
 	#assert(comp >= 0 && comp <= 4);
 	for j in 0..h/2-1 {
 		for i in 0..w-1 {
@@ -52,7 +52,7 @@ write_png_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u
 	return cast(int)stbi_write_png(strings.unsafe_string_to_cstring(filename), i32(w), i32(h), i32(comp), &data[0], i32(stride_in_bytes));
 }
 
-write_tga_flip :: inline proc(filename: string, w, h: int, $comp: int, data: []u8) -> int {
+write_tga_flip :: proc(filename: string, w, h: int, $comp: int, data: []u8) -> int {
 	#assert(comp >= 0 && comp <= 4);
 	for j in 0..h/2-1 {
 		for i in 0..w-1 {
