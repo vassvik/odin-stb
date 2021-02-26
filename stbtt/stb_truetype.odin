@@ -96,7 +96,7 @@ Packed_Char :: stbtt_packedchar;
 Pack_Range :: stbtt_pack_range;
 Pack_Context :: stbtt_pack_context;
 
-STBTT_POINT_SIZE :: inline proc(x: $T) -> T { return -x; } // @NOTE: this was a macro
+STBTT_POINT_SIZE :: #force_inline proc(x: $T) -> T { return -x; } // @NOTE: this was a macro
 
 // bindings
 @(default_calling_convention="c")
