@@ -86,7 +86,7 @@ stbtt_pack_range :: struct {
 
 stbtt_pack_context :: struct {
    user_allocator_context, pack_info: rawptr,
-   width, height, stride_in_bytes, padding: i32,
+   width, height, stride_in_bytes, padding, skip_missing: i32,
    h_oversample, v_oversample: u32,
    pixels: ^u8,
    nodes: rawptr,
@@ -106,6 +106,7 @@ foreign stbtt {
     stbtt_PackFontRange :: proc(spc: ^stbtt_pack_context, fontdata: ^u8, font_index: i32, font_size: f32, first_unicode_char_in_range, num_chars_in_range: i32, chardata_for_range: ^stbtt_packedchar) -> i32 ---;
     stbtt_PackFontRanges :: proc(spc: ^stbtt_pack_context, fontdata: ^u8, font_index: i32, ranges: ^stbtt_pack_range, num_ranges: i32) -> i32 ---;
     stbtt_PackSetOversampling :: proc(spc: ^stbtt_pack_context, h_oversample, v_oversample: u32) ---;
+    stbtt_PackSetSkipMissingCodepoints :: proc(spc: ^stbtt_pack_context, skip: i32) ---;
     stbtt_GetPackedQuad :: proc(chardata: ^stbtt_packedchar, pw, ph, char_index: i32, xpos, ypos: ^f32, q: ^stbtt_aligned_quad, align_to_integer: i32) ---;
     stbtt_PackFontRangesGatherRects :: proc(spc: ^stbtt_pack_context, info: ^stbtt_fontinfo, ranges: ^stbtt_pack_range, num_ranges: i32, rects: ^stbrp_rect) -> i32 ---; // NOTE: These are not wrapped
     stbtt_PackFontRangesPackRects :: proc(spc: ^stbtt_pack_context, rects: ^stbrp_rect, num_rects: i32) ---; // NOTE: These are not wrapped
@@ -137,6 +138,10 @@ pack_set_oversampling :: proc(spc: ^Pack_Context, h_oversample, v_oversample: in
     stbtt_PackSetOversampling(spc, u32(h_oversample), u32(v_oversample));
 }
 
+stbtt_pack_set_skip_missing_codepoints :: proc(spc: ^stbtt_pack_context, skip: bool) {
+    stbtt_PackSetSkipMissingCodepoints(spc, i32(skip));
+}
+
 get_packed_quad :: proc(chardata: []Packed_Char, pw, ph, char_index: int, align_to_integer: bool) -> (f32, f32, Aligned_Quad) {
     xpos, ypos: f32;
     q: Aligned_Quad;
@@ -159,7 +164,7 @@ stbtt_fontinfo :: struct {
 
     numGlyphs: i32,
     
-    loca,head,glyf,hhea,hmtx,kern: i32,
+    loca,head,glyf,hhea,hmtx,kern,gpos,svg: i32,
     index_map: i32,
     indexToLocFormat: i32,
 
@@ -172,6 +177,14 @@ stbtt_fontinfo :: struct {
 }
 
 Font_Info :: stbtt_fontinfo;
+
+stbtt_kerningentry :: struct {
+   glyph1: i32, // use stbtt_FindGlyphIndex
+   glyph2: i32,
+   advance: i32,
+}
+
+Kerning_Entry :: stbtt_kerningentry;
 
 @(default_calling_convention="c")
 foreign stbtt {
@@ -230,6 +243,8 @@ foreign stbtt {
     stbtt_GetGlyphHMetrics :: proc(info: ^stbtt_fontinfo, glyph_index: i32, advanceWidth, leftSideBearing: ^i32) ---;
     stbtt_GetGlyphKernAdvance :: proc(info: ^stbtt_fontinfo, glyph1, glyph2: i32) -> i32 ---;
     stbtt_GetGlyphBox :: proc(info: ^stbtt_fontinfo, glyph_index: i32, x0, y0, x1, y1: ^i32) -> i32 ---;
+    stbtt_GetKerningTableLength :: proc(info: ^stbtt_fontinfo) -> i32 ---;
+    stbtt_GetKerningTable :: proc(info: ^stbtt_fontinfo, table: ^stbtt_kerningentry, table_length: i32) -> i32 ---;
 }
 
 scale_for_pixel_height :: proc(info: ^stbtt_fontinfo, pixels: f32) -> f32 {
@@ -292,6 +307,13 @@ get_glyph_box :: proc(info: ^stbtt_fontinfo, glyph_index: int) -> (int, int, int
     return int(x0), int(y0), int(x1), int(y1), bool(ret);
 }
 
+stbtt_get_kerning_table_length :: proc(info: ^stbtt_fontinfo) -> int {
+    return int(stbtt_GetKerningTableLength(info));
+}
+
+stbtt_get_kerning_table :: proc(info: ^stbtt_fontinfo, table: ^stbtt_kerningentry, table_length: int) -> int {
+    return int(stbtt_GetKerningTable(info, table, i32(table_length)));
+}
 
 
 //////////////////////////////////////////////////////////////////////////////
