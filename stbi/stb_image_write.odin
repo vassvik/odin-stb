@@ -3,8 +3,8 @@ package stbi
 import "core:os"
 import "core:strings"
 
-when os.OS == "windows" do foreign import stbiw "../lib/stb_image_write.lib"
-when os.OS == "linux" do foreign import stbiw "../lib/stb_image_write.a"
+when os.OS == .Windows do foreign import stbiw "../lib/stb_image_write.lib"
+when os.OS == .Linux do foreign import stbiw "../lib/stb_image_write.a"
 
 // bind
 @(default_calling_convention="c")
