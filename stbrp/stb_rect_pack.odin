@@ -2,8 +2,8 @@ package stbrp
 
 import "core:os"
 
-when os.OS == "windows" do foreign import stb_rect_pack "../lib/stb_rect_pack.lib"
-when os.OS == "linux" do foreign import stb_rect_pack "../lib/stb_rect_pack.a"
+when os.OS == .Windows do foreign import stb_rect_pack "../lib/stb_rect_pack.lib"
+when os.OS == .Linux || os.OS == .Darwin do foreign import stb_rect_pack "../lib/stb_rect_pack.a"
 
 STBRP_HEURISTIC :: enum i32
 {

@@ -3,7 +3,7 @@ package stbtt
 import "core:os"
 
 when os.OS == .Windows do foreign import stbtt "../lib/stb_truetype.lib"
-when os.OS == .Linux do foreign import stbtt "../lib/stb_truetype.a"
+when os.OS == .Linux || os.OS == .Darwin do foreign import stbtt "../lib/stb_truetype.a"
 
 import "core:mem";
 

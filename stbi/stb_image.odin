@@ -7,7 +7,7 @@ package stbi
 import "core:os"
 
 when os.OS == .Windows do foreign import stbi "../lib/stb_image.lib"
-when os.OS == .Linux do foreign import stbi "../lib/stb_image.a"
+when os.OS == .Linux || os.OS == .Darwin do foreign import stbi "../lib/stb_image.a"
 
 //
 // load image by filename, open file, or memory buffer
