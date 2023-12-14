@@ -39,8 +39,8 @@ write_jpg :: #force_inline proc(filename: string, w, h, comp: int, data: []u8, q
 
 write_png_flip :: proc(filename: string, w, h: int, $comp: int, data: []u8, stride_in_bytes: int) -> int {
 	#assert(comp >= 0 && comp <= 4);
-	for j in 0..h/2-1 {
-		for i in 0..w-1 {
+	for j in 0..=h/2-1 {
+		for i in 0..=w-1 {
 			k1 := comp*(j*w + i);
 			k2 := comp*((h - 1 - j)*w + i);
 			data[k1 + 0], data[k2 + 0] = data[k2 + 0], data[k1 + 0];
@@ -54,8 +54,8 @@ write_png_flip :: proc(filename: string, w, h: int, $comp: int, data: []u8, stri
 
 write_tga_flip :: proc(filename: string, w, h: int, $comp: int, data: []u8) -> int {
 	#assert(comp >= 0 && comp <= 4);
-	for j in 0..h/2-1 {
-		for i in 0..w-1 {
+	for j in 0..=h/2-1 {
+		for i in 0..=w-1 {
 			k1 := comp*(j*w + i);
 			k2 := comp*((h - 1 - j)*w + i);
 			data[k1 + 0], data[k2 + 0] = data[k2 + 0], data[k1 + 0];
